@@ -1,11 +1,11 @@
-# auth/serializers.py
+# serializers.py
 from rest_framework import serializers
 from .models import User, Professeur, Centre, Etudiant
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'password']
+        fields = ['id', 'name', 'email', 'password', 'role']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -20,10 +20,11 @@ class ProfesseurSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Professeur
-        fields = ['user', 'experience', 'cv', 'remote','phone', 'specialty']
+        fields = ['user', 'experience', 'cv', 'remote', 'phone', 'specialty']
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        user_data['role'] = 'professeur'
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
         professeur = Professeur.objects.create(user=user, **validated_data)
         return professeur
@@ -33,10 +34,11 @@ class CentreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Centre
-        fields = ['user', 'address', 'capacity','phone', 'city']
+        fields = ['user', 'address', 'capacity', 'phone', 'city']
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        user_data['role'] = 'centre'
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
         centre = Centre.objects.create(user=user, **validated_data)
         return centre
@@ -50,7 +52,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        user_data['role'] = 'etudiant'
         user = UserSerializer.create(UserSerializer(), validated_data=user_data)
         etudiant = Etudiant.objects.create(user=user)
         return etudiant
-

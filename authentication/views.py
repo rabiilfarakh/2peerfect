@@ -1,3 +1,4 @@
+# views.py
 from rest_framework.permissions import AllowAny  
 from rest_framework import status
 from rest_framework.response import Response
@@ -36,6 +37,7 @@ class EtudiantRegisterView(RegisterView):
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
+    expected_role = None  
 
     def post(self, request):
         email = request.data.get('email')
@@ -43,33 +45,28 @@ class LoginView(APIView):
         user = authenticate(email=email, password=password)
         
         if user is not None:
+            if self.expected_role and user.role != self.expected_role:
+                return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
             refresh = RefreshToken.for_user(user)
-            token = str(refresh.access_token)
-            
-            response_data = {'access': token}
-            response_data['message'] = self.get_success_message(user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
 
-            # Stocker le token dans le local storage du navigateur (à gérer côté frontend)
+            response_data = {
+                'access': access_token,
+                'refresh': refresh_token,
+                'role': user.role 
+            }
 
-            return Response(response_data)
+            return Response(response_data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    def get_success_message(self, user):
-        if hasattr(user, 'etudiant'):
-            return 'Accès réussi en tant qu\'étudiant'
-        elif hasattr(user, 'professeur'):
-            return 'Accès réussi en tant que professeur'
-        elif hasattr(user, 'centre'):
-            return 'Accès réussi en tant que centre'
-        else:
-            return 'Accès réussi'
-
 class EtudiantLoginView(LoginView):
-    pass
+    expected_role = 'etudiant' 
 
 class ProfLoginView(LoginView):
-    pass
+    expected_role = 'professeur'  
 
 class CentreLoginView(LoginView):
-    pass
+    expected_role = 'centre'  

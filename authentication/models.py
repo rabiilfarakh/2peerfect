@@ -1,3 +1,4 @@
+# models.py
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import Permission as AuthPermission
@@ -19,6 +20,8 @@ class User(AbstractUser):
     username = None
     first_name = None
     last_name = None
+    role = models.CharField(max_length=20, choices=[('etudiant', 'Etudiant'), ('professeur', 'Professeur'), ('centre', 'Centre')], default='etudiant')
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
