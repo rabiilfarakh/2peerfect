@@ -23,6 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+    
+    def delete(self, instance):
+        instance.delete()
 
 class ProfesseurSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -56,6 +59,9 @@ class ProfesseurSerializer(serializers.ModelSerializer):
         
         return instance
     
+    def delete(self, instance):
+        instance.delete()
+    
 class CentreSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
@@ -87,6 +93,9 @@ class CentreSerializer(serializers.ModelSerializer):
         instance.save()
         
         return instance
+    
+    def delete(self, instance):
+        instance.delete()
 
 
 class EtudiantSerializer(serializers.ModelSerializer):
@@ -113,4 +122,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
         user.save()
 
         return instance
+    
+    def delete(self, instance):
+        instance.delete()
 

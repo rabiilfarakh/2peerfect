@@ -94,21 +94,41 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = []
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 # Vue pour les opérations CRUD sur les professeurs
 class ProfesseurDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Professeur.objects.all()
     serializer_class = ProfesseurSerializer
     permission_classes = [] 
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 # Vue pour les opérations CRUD sur les centres
 class CentreDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Centre.objects.all()
     serializer_class = CentreSerializer
     permission_classes = []
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 # Vue pour les opérations CRUD sur les étudiants
 class EtudiantDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Etudiant.objects.all()
     serializer_class = EtudiantSerializer
     permission_classes = []
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
