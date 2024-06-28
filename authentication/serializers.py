@@ -60,6 +60,7 @@ class ProfesseurSerializer(serializers.ModelSerializer):
         return instance
     
     def delete(self, instance):
+        instance.user.delete()  # Supprime également l'utilisateur associé
         instance.delete()
     
 class CentreSerializer(serializers.ModelSerializer):
@@ -95,6 +96,7 @@ class CentreSerializer(serializers.ModelSerializer):
         return instance
     
     def delete(self, instance):
+        instance.user.delete()  # Supprime également l'utilisateur associé
         instance.delete()
 
 
@@ -124,4 +126,5 @@ class EtudiantSerializer(serializers.ModelSerializer):
         return instance
     
     def delete(self, instance):
+        instance.user.delete()  # Supprime également l'utilisateur associé
         instance.delete()
