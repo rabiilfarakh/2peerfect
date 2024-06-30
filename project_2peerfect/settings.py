@@ -77,15 +77,16 @@ WSGI_APPLICATION = 'project_2peerfect.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+from decouple import config
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'project_2peerfect',
-        'USER': 'root',
-        'PASSWORD': '167200216',
-        'HOST': 'localhost',  
-        'PORT': '3306',
+        'NAME': config('project_2peerfect'),
+        'USER': config('root'),
+        'PASSWORD':config('167200216') ,
+        'HOST': config('localhost'),  
+        'PORT': config('DB_PORT', default='3306'),
     }
 }
 
