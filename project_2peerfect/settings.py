@@ -44,7 +44,11 @@ INSTALLED_APPS = [
     'authentication',
     'Courses',
     'meet',
+    'payments',
 ]
+
+STRIPE_SECRET_KEY = 'sk_test_51PZyh0RpgxHyPg8rMM2DrcUPUgSHUlUcbetHMM2MX6AcfrqS64Lw1OLtCTXIvssMFvueUwNs7tAePHFv0T7N0ABK00XaYu3Nbr'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51PZyh0RpgxHyPg8rx7qKdZIH4wfiJOUX2YJuEqjXEs7FZ959OfMPRR9RafWAJHXS2JAOpWzrolrcexyRQEWAqsHH00ArJkYFLX'
 
 
 MIDDLEWARE = [
