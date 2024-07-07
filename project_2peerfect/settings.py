@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     #App 
     'authentication',
     'Courses',
+    'meet',
 ]
 
 
