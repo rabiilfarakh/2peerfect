@@ -1,26 +1,48 @@
-from django.urls import path
+# courses/urls.py
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CourseViewSet
+from .views import CourseViewSet, QuizViewSet, QuestionViewSet, TakeQuizView, CertificateViewSet
 
 router = DefaultRouter()
-router.register(r'', CourseViewSet, basename='course')
+router.register(r'courses', CourseViewSet, basename='course')
+router.register(r'quizzes', QuizViewSet, basename='quiz')
+router.register(r'questions', QuestionViewSet, basename='question')
+router.register(r'certificates', CertificateViewSet, basename='certificate')
 
 urlpatterns = [
-    path('list/', CourseViewSet.as_view({'get': 'list'}), name='course_list'),
-    path('create/', CourseViewSet.as_view({'post': 'create'}), name='course_create'),
-    path('<int:pk>/', CourseViewSet.as_view({'get': 'retrieve'}), name='course_detail'),
-    path('update/<int:pk>/', CourseViewSet.as_view({'put': 'update'}), name='course_update'),
-    path('partial_update/<int:pk>/', CourseViewSet.as_view({'patch': 'partial_update'}), name='course_partial_update'),
-    path('delete/<int:pk>/', CourseViewSet.as_view({'delete': 'destroy'}), name='course_delete'),
+    path('', include(router.urls)),
+    path('quiz/take/', TakeQuizView.as_view(), name='take_quiz'),
 ]
 
-urlpatterns += router.urls
+# Avec cette configuration, vos API endpoints seront :
 
-# This setup ensures your API endpoints will be as follows:
+# Courses:
+# POST /api/courses/ pour créer un nouveau cours.
+# GET /api/courses/ pour lister tous les cours.
+# GET /api/courses/<int:pk>/ pour récupérer un cours spécifique.
+# PUT /api/courses/<int:pk>/ pour mettre à jour un cours spécifique.
+# PATCH /api/courses/<int:pk>/ pour mettre à jour partiellement un cours spécifique.
+# DELETE /api/courses/<int:pk>/ pour supprimer un cours spécifique.
 
-# POST /api/courses/create/ to create a new course.
-# GET /api/courses/list/ to list all courses.
-# GET /api/courses/<int:pk>/ to retrieve a specific course.
-# PUT /api/courses/update/<int:pk>/ to update a specific course.
-# PATCH /api/courses/partial_update/<int:pk>/ to partially update a specific course.
-# DELETE /api/courses/delete/<int:pk>/ to delete a specific course.
+# Quizzes:
+# POST /api/quizzes/ pour créer un nouveau quiz.
+# GET /api/quizzes/ pour lister tous les quizzes.
+# GET /api/quizzes/<int:pk>/ pour récupérer un quiz spécifique.
+# PUT /api/quizzes/<int:pk>/ pour mettre à jour un quiz spécifique.
+# PATCH /api/quizzes/<int:pk>/ pour mettre à jour partiellement un quiz spécifique.
+# DELETE /api/quizzes/<int:pk>/ pour supprimer un quiz spécifique.
+
+# Questions:
+# POST /api/questions/ pour créer une nouvelle question.
+# GET /api/questions/ pour lister toutes les questions.
+# GET /api/questions/<int:pk>/ pour récupérer une question spécifique.
+# PUT /api/questions/<int:pk>/ pour mettre à jour une question spécifique.
+# PATCH /api/questions/<int:pk>/ pour mettre à jour partiellement une question spécifique.
+# DELETE /api/questions/<int:pk>/ pour supprimer une question spécifique.
+
+# Certificates:
+# GET /api/certificates/ pour lister tous les certificats.
+# GET /api/certificates/<int:pk>/ pour récupérer un certificat spécifique.
+
+# Take Quiz:
+# POST /api/quiz/take/ pour permettre à un étudiant de passer un quiz et obtenir un certificat s'il réussit.

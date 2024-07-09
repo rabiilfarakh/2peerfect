@@ -1,3 +1,4 @@
+# payments/views.py
 import stripe # type: ignore
 from django.conf import settings
 from rest_framework.views import APIView
@@ -67,3 +68,33 @@ class UpdatePaymentStatusView(APIView):
             return Response(PaymentSerializer(payment).data, status=status.HTTP_200_OK)
         except Payment.DoesNotExist:
             return Response({"error": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class EnrollCourseView(APIView):
+    def post(self, request, *args, **kwargs):
+        course_id = request.data.get('course_id')
+        etudiant_id = request.data.get('etudiant_id')
+        try:
+            course = Course.objects.get(id=course_id)
+            etudiant = Etudiant.objects.get(user__id=etudiant_id)
+            amount = int(course.prix * 100)
+            payment_intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency='usd',
+                metadata={'course_id': course.id, 'etudiant_id': etudiant.user.id}
+            )
+            payment = Payment.objects.create(
+                etudiant=etudiant,
+                course=course,
+                amount=course.prix,
+                status='Pending'
+            )
+            # Marquer l'étudiant comme inscrit au cours
+            etudiant.courses.add(course)
+            return Response({
+                'paymentIntent': payment_intent,
+                'payment': PaymentSerializer(payment).data
+            }, status=status.HTTP_201_CREATED)
+        except Course.DoesNotExist:
+            return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Etudiant.DoesNotExist:
+            return Response({"error": "Etudiant not found"}, status=status.HTTP_404_NOT_FOUND)
