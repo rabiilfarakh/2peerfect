@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     'meet',
     'payments',
 ]
-
-STRIPE_SECRET_KEY = 'sk_test_51PZyh0RpgxHyPg8rMM2DrcUPUgSHUlUcbetHMM2MX6AcfrqS64Lw1OLtCTXIvssMFvueUwNs7tAePHFv0T7N0ABK00XaYu3Nbr'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51PZyh0RpgxHyPg8rx7qKdZIH4wfiJOUX2YJuEqjXEs7FZ959OfMPRR9RafWAJHXS2JAOpWzrolrcexyRQEWAqsHH00ArJkYFLX'
+# Créez un compte Stripe et remplacez `SECRET_KEY` et `PUBLISHABLE_KEY` par les clés trouvées dans votre compte Stripe.
+STRIPE_SECRET_KEY = ''
+STRIPE_PUBLISHABLE_KEY = ''
 
 
 MIDDLEWARE = [
@@ -62,10 +62,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
    
 ]
-# AUTHENTICATION_BACKENDS=[
-#      'authentication.backends.EmailBackend',
-#      'django.contrib.auth.backends.ModelBackend',
-# ]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
